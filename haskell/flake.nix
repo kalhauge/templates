@@ -8,7 +8,7 @@
       flake = false;
     };
     fourmolu = {
-      url = "github:fourmolu/fourmolu/main";
+      url = "github:fourmolu/fourmolu/v0.10.1.0";
       flake = false;
     };
   };
@@ -17,11 +17,30 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = (import nixpkgs { inherit system; });
+        inherit (pkgs.haskell) lib;
         haskellPackages = pkgs.haskell.packages.ghc902;
+
+        # The current version of fourmolu requires a some other versions of cabal-syntax
+        # and ghc-lib-parser. 
+        inherit (haskellPackages.override (_: {
+          overrides = hself: hsuper:
+            {
+              Cabal-syntax = hself.callHackage "Cabal-syntax" "3.8.1.0" { };
+              ghc-lib-parser = hself.callHackage "ghc-lib-parser" "9.4.2.20220822" { };
+              fourmolu =
+                lib.overrideCabal (hself.callCabal2nix "fourmolu" inputs.fourmolu { })
+                  (drv: {
+                    preCheck = drv.preCheck or "" + ''
+                      export PATH="$PWD/dist/build/fourmolu:$PATH"
+                    '';
+                  });
+            };
+        })) fourmolu;
+
         project = returnShellEnv:
           haskellPackages.developPackage {
             inherit returnShellEnv;
-            root = self;
+            root = ./.;
             name = "template";
             source-overrides = {
               # here you can add source-overrides, for example:
@@ -35,15 +54,17 @@
               with pkgs.haskell.lib;
               overrideCabal drv (drv:
                 {
-                  buildTools = (drv.buildTools or [ ]) ++ (with haskellPackages; [
-                    # Add build tools here 
-                    cabal-install
-                    ghcid
-                    haskell-language-server
-                    retrie
-                    hpack
-                    fourmolu
-                  ]);
+                  buildTools =
+                    (drv.buildTools or [ ])
+                    ++ [ fourmolu ]
+                    ++ (with haskellPackages; [
+                      # Add build tools here 
+                      cabal-install
+                      ghcid
+                      haskell-language-server
+                      retrie
+                      hpack
+                    ]);
                   testToolDepends = (drv.testTools or [ ]) ++ (with pkgs; [
                     # Add test tools here
                   ]);
