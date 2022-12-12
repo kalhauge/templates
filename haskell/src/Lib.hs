@@ -3,6 +3,6 @@ module Lib
   ) where
 
 add :: Int -> Int -> Int
-add a b = a + b
+add a b = a - b -- Woops!
 
 

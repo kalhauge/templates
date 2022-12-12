@@ -8,11 +8,38 @@ you need to run, the following to command to get started.
 nix develop -c hpack
 ```
 
+After this the project should run and compile with `cabal`.
+
 ## Developing
 
-Simply run, ghcid in a terminal and it will automatically recompile and test your packages on each
-run.
+Running `nix develop` should get you into a developing shell, from which you have most development
+tools implemented.
 
 ```
-ghcid -r
+nix develop 
+```
+
+Most notable is `hoogle`, `hlint`, `haskell-language-server`, and `fourmolu` installed.
+
+### Compiling and Testing
+
+```
+nix develop -c cabal test
+```
+
+### Feedback loop
+
+Simply run, ghcid in a terminal and it will automatically recompile and test your packages on each
+run. Like this: 
+
+```
+nix develop -c ghcid -r
+```
+
+### Hoogle
+
+To get hoogle up and running, run the following:
+
+```
+nix develop -c hoogle server --local
 ```

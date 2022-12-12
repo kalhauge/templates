@@ -1,9 +1,10 @@
 module SpecHelper 
   ( module Test.Hspec
-  , module Test.Hspec.Expectations.Pretty
+  , -- * Other exports
+    shouldBe
+  , shouldSatisfy
   , hedgehog
   ) where
-
 
 -- hspec
 import Test.Hspec hiding (shouldBe, shouldSatisfy)

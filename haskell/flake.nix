@@ -1,10 +1,11 @@
 {
-  description = "Insert description here";
+  description = "template";
   inputs = {
     nixpkgs.url = "github:NixOs/nixpkgs/nixpkgs-unstable";
-    flake-utils = {
-      url = "github:NixOs/nixpkgs/nixpkgs-unstable";
-      inputs.nixpkgs.follow = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
     };
     fourmolu = {
       url = "github:fourmolu/fourmolu/main";
@@ -12,7 +13,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, fourmolu }@inputs:
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = (import nixpkgs { inherit system; });
@@ -21,10 +22,10 @@
           haskellPackages.developPackage {
             inherit returnShellEnv;
             root = self;
-            name = throw "Insert name here!";
+            name = "template";
             source-overrides = {
               # here you can add source-overrides, for example:
-              inherit (inputs) fourmolu;
+              # inherit (inputs) aeson;
             };
             overrides = hself: hsuper: with pkgs.haskell.lib; {
               # Here you can override things, for example

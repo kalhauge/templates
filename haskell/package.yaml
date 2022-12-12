@@ -1,4 +1,4 @@
-# name: name 
+name: template 
 # version: 0.1.0
 # synopsis: synopsis
 # maintainer: maintainer <email>
@@ -14,10 +14,11 @@ library:
   source-dirs: src
 
 tests:
-  apfl-test:
+  template-test:
     source-dirs: test/src
     main: Main.hs
     dependencies:
+      - template
       - hedgehog
       - hspec
       - hspec-discover

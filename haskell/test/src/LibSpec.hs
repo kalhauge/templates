@@ -20,7 +20,7 @@ specAdd :: Spec
 specAdd = describe "add" do
   it "should be communative" do
     hedgehog do 
-      let smallInts = Gen.intergral (Range.linearFrom 0 (-100) (100))
+      let smallInts = Gen.integral (Range.linearFrom 0 (-100) (100))
       x <- forAll smallInts
       y <- forAll smallInts
       Lib.add x y === Lib.add y x
