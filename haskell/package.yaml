@@ -1,0 +1,25 @@
+# name: name 
+# version: 0.1.0
+# synopsis: synopsis
+# maintainer: maintainer <email>
+# category: categories
+# extra-source-files: []
+
+ghc-options: -Wall -fno-warn-incomplete-uni-patterns -Werror
+
+dependencies:
+  - base >= 4.9 && < 5
+
+library:
+  source-dirs: src
+
+tests:
+  apfl-test:
+    source-dirs: test/src
+    main: Main.hs
+    dependencies:
+      - hedgehog
+      - hspec
+      - hspec-discover
+      - hspec-expectations-pretty-diff
+      - hspec-hedgehog

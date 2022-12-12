@@ -1,0 +1,4 @@
+:set -fwarn-unused-binds -fno-warn-unused-imports
+:set -isrc -itest/src
+:set args --fail-fast --rerun --failure-report=hspec-report
+:load Main
